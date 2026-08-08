@@ -2,6 +2,12 @@ import streamlit as st
 import numpy as np
 from PIL import Image
 import time
+import os
+import gdown
+
+# https://drive.google.com/file/d/1hXaREPSFb0bm-4HHQAWOhNm-oEXTW-1n/view?usp=drive_link
+
+# streamlit run cat-vs-dog.py
 
 # TensorFlow import with graceful fallback
 try:
@@ -106,8 +112,14 @@ section[data-testid="stSidebar"] {
 def load_cnn_model():
     if not TF_AVAILABLE:
         raise ImportError("TensorFlow is not installed. Run: pip install tensorflow")
-    # Load the .keras model (native Keras format)
-    model = keras_load_model("cnn_model.keras")
+
+    model_path = "cnn_model.keras"
+    model_id = "1hXaREPSFb0bm-4HHQAWOhNm-oEXTW-1n"
+
+    if not os.path.exists(model_path):
+        gdown.download(id=model_id, output=model_path, quiet=False)
+
+    model = keras_load_model(model_path)
     return model
 
 try:
